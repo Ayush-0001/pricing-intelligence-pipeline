@@ -1,6 +1,5 @@
 import os
 import sys
-import subprocess
 
 import pandas as pd
 import plotly.express as px
@@ -16,28 +15,16 @@ from pipeline.ml import recommend
 st.set_page_config(page_title="Business Decision Dashboard", layout="wide")
 st.title("Business Decision Dashboard")
 
-# 🔥 AUTO-RUN PIPELINE IF DB MISSING
-DB_PATH = os.path.join(ROOT_DIR, "pricing_intel.db")
-
-if not os.path.exists(DB_PATH):
-    st.warning("No data found. Running pipeline (first-time setup)...")
-    try:
-        subprocess.run(["python", "run_pipeline.py"], check=True)
-        st.success("Data generated successfully. Reloading...")
-        st.rerun()
-    except Exception as e:
-        st.error("Failed to generate data automatically.")
-        st.exception(e)
-        st.stop()
 
 @st.cache_data(ttl=300)
 def load_data():
     return read_table("processed_pricing")
 
+
 try:
     df = load_data()
 except Exception as exc:
-    st.error(f"Data unavailable even after pipeline run. Details: {exc}")
+    st.error(f"Data unavailable. Details: {exc}")
     st.stop()
 
 if df.empty:
