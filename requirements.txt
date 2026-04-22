@@ -1,0 +1,10 @@
+requests
+beautifulsoup4
+pandas
+numpy
+scikit-learn
+fastapi
+uvicorn
+sqlalchemy
+streamlit
+plotly
